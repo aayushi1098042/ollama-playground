@@ -9,7 +9,12 @@ from langgraph.graph import START, END, StateGraph
 from langchain_core.prompts import ChatPromptTemplate
 from typing_extensions import TypedDict
 import re
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
+TAVILY_API_KEY=os.getenv("TAVILY_API_KEY")
+os.environ["TAVILY_API_KEY"]=TAVILY_API_KEY
 
 summary_template = """
 Summarize the following content into a concise paragraph that directly addresses the query. Ensure the summary 
@@ -51,7 +56,7 @@ def search_web(state: ResearchState):
     }
 
 def summarize_results(state: ResearchState):
-    model = ChatOllama(model="deepseek-r1:8b")
+    model = ChatOllama(model="deepseek-r1:1.5b")
     prompt = ChatPromptTemplate.from_template(summary_template)
     chain = prompt | model
 
